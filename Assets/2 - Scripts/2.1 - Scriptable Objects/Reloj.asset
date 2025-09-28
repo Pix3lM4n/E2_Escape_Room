@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5699828113ee5224387257449fe20b82, type: 3}
   m_Name: Reloj
   m_EditorClassIdentifier: 
-  itemName: 
-  itemColor: {r: 0, g: 0, b: 0, a: 0}
-  itemID: 0
+  itemName: Reloj Atrae-Monstruo
+  itemColor: {r: 0, g: 0, b: 1, a: 1}
+  itemID: 1
