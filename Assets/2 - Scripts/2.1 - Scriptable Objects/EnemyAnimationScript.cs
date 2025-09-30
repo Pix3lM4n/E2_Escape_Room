@@ -2,5 +2,6 @@ using UnityEngine;
 
 public class EnemyAnimationScript : MonoBehaviour
 {
-    Animation anim;
+    public Animator anim;
+
 }
