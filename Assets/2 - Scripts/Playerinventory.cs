@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Playerinventory : MonoBehaviour
+public class PlayerInventory : MonoBehaviour
 {
-    public ItemTemplate[] inventory;
+    [SerializeField] ItemTemplate[] inventory;
 
     void Start()
     {
