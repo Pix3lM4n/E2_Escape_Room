@@ -6,13 +6,13 @@ public class EnemyBehaviour : MonoBehaviour
     #region Variables
     NavMeshAgent enemyAgent;
     [SerializeField] Transform[] patrolPoints;
-    [SerializeField] private ENEMY_STATE currentState;
+    [SerializeField] ENEMY_STATE currentState;
     public enum ENEMY_STATE
     {
         Idle,
         Walking,
         Chasing,
-        Searching
+        Stunned
     }
 
     [Header("Idle State")]
@@ -21,13 +21,12 @@ public class EnemyBehaviour : MonoBehaviour
     float elapsedIdleTime;
 
     [Header("Chasing State")]
-    //[SerializeField] bool isPlayerOnRange;
     public Transform player;
 
-    [Header("Searhing State")]
-    public float searchTime; //Time for searching
-    public Vector2 minMaxSearchTime; //Range for searchingTime
-    float elapsedSearchTime;
+    [Header("Stunned State")]
+    public float stunTime; //Time for stunned
+    public Vector2 minMaxStunTime; //Range for stunTime
+    float elapsedStunTime;
     #endregion
 
     private void Awake()
@@ -48,7 +47,6 @@ public class EnemyBehaviour : MonoBehaviour
                 if (elapsedIdleTime >= idleTime)
                 {
                     elapsedIdleTime = 0;
-                    print("We is walking");
                     ChangeState(ENEMY_STATE.Walking);
                 }
                 break;
@@ -56,28 +54,24 @@ public class EnemyBehaviour : MonoBehaviour
             case ENEMY_STATE.Walking: //Estado de caminata
                 if (enemyAgent.remainingDistance <= enemyAgent.stoppingDistance)
                 {
-                    print("Arrived to point");
                     ChangeState(ENEMY_STATE.Idle);
                 }
                 break;
 
             case ENEMY_STATE.Chasing: //Estado de persecución
-                print("We is chasing");
                 enemyAgent.SetDestination(player.position);
                 break;
 
-            case ENEMY_STATE.Searching: //Estado de búsqueda tras perder al jugador
-                searchTime = Random.Range(minMaxSearchTime.x, minMaxSearchTime.y);
-                elapsedSearchTime += Time.deltaTime;
-                if (elapsedSearchTime >= idleTime)
+            case ENEMY_STATE.Stunned: //Estado de aturdido tras ser atacado
+                stunTime = Random.Range(minMaxStunTime.x, minMaxStunTime.y);
+                elapsedStunTime += Time.deltaTime;
+                if (elapsedStunTime >= idleTime)
                 {
-                    elapsedSearchTime = 0;
-                    print("We is searching");
+                    elapsedStunTime = 0;
                     ChangeState(ENEMY_STATE.Walking);
                 }
                 else if (enemyAgent.remainingDistance <= enemyAgent.stoppingDistance)
                 {
-                    print("Arrived to point");
                     ChangeState(ENEMY_STATE.Idle);
                 }
                 break;
@@ -96,10 +90,10 @@ public class EnemyBehaviour : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             print("Lost Player");
-            ChangeState(ENEMY_STATE.Searching);
+            ChangeState(ENEMY_STATE.Walking);
         }
     }
-    void ChangeState(ENEMY_STATE newState)
+    public void ChangeState(ENEMY_STATE newState)
     {
         currentState = newState;
         switch (newState)
@@ -110,6 +104,22 @@ public class EnemyBehaviour : MonoBehaviour
 
             case ENEMY_STATE.Chasing:
                 enemyAgent.SetDestination(player.position);
+                break;
+
+            case ENEMY_STATE.Stunned: //Estado de búsqueda tras perder al jugador
+                stunTime = Random.Range(minMaxStunTime.x, minMaxStunTime.y);
+                elapsedStunTime += Time.deltaTime;
+                if (elapsedStunTime >= idleTime)
+                {
+                    elapsedStunTime = 0;
+                    print("We is stunned");
+                    ChangeState(ENEMY_STATE.Walking);
+                }
+                else if (enemyAgent.remainingDistance <= enemyAgent.stoppingDistance)
+                {
+                    print("Arrived to point");
+                    ChangeState(ENEMY_STATE.Idle);
+                }
                 break;
         }
     }

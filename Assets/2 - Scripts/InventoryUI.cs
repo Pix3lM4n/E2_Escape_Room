@@ -6,6 +6,7 @@ public class InventoryUI : MonoBehaviour
 {
     Image slotImage;
     TextMeshProUGUI slotText;
+    int slotID;
     PlayerInventory playerInventory;
 
     private void Awake()
@@ -18,8 +19,24 @@ public class InventoryUI : MonoBehaviour
     {
         slotText.text = null;
     }
-    void SetSlot(Item itemToSet)
+    public void SetSlot(Item itemToSet)
     {
-
+        slotText.text = itemToSet.itemTemplate.itemName;
+        slotImage.color = itemToSet.itemTemplate.itemColor;
+        slotID = itemToSet.itemTemplate.itemID;
+    }
+    public void ClearSlot(int buttonIndex)
+    {
+        if (playerInventory.inventory[buttonIndex] != null)
+        {
+            switch (slotID)
+            {
+                case 1:
+                    playerInventory.PlayerAttack();
+                    break;
+            }
+            slotText.text = null;
+            slotImage.color = Color.white;
+        }
     }
 }
