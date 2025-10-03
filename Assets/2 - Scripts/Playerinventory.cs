@@ -2,15 +2,8 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-<<<<<<< Updated upstream
-    [SerializeField] ItemTemplate[] inventory;
-
-    void Start()
-    {
-        inventory = new ItemTemplate[5];
-=======
-    EnemyBehaviour enemyBehaviour;
     [HideInInspector] public ItemTemplate[] inventory;
+    EnemyBehaviour enemyBehaviour;
     public InventoryUI[] inventoryUI;
     [HideInInspector] public bool playerIsAtGate, hasKey;
     public KeyCode interactionKey;
@@ -19,7 +12,6 @@ public class PlayerInventory : MonoBehaviour
     {
         enemyBehaviour = FindFirstObjectByType<EnemyBehaviour>();
         inventory = new ItemTemplate[3];
->>>>>>> Stashed changes
     }
     void OnTriggerEnter(Collider other)
     {
@@ -27,8 +19,6 @@ public class PlayerInventory : MonoBehaviour
         {
             AddItem(other.GetComponent<Item>());
         }
-<<<<<<< Updated upstream
-=======
     }
     void OnTriggerStay(Collider other)
     {
@@ -40,7 +30,6 @@ public class PlayerInventory : MonoBehaviour
         {
             GameMaster.Instance.OpenKeyGate();
         }
->>>>>>> Stashed changes
     }
     private void AddItem(Item itemToAdd)
     {
@@ -49,14 +38,11 @@ public class PlayerInventory : MonoBehaviour
             if (inventory[i] == null)
             {
                 inventory[i] = itemToAdd.itemTemplate;
-<<<<<<< Updated upstream
-=======
                 inventoryUI[i].SetSlot(itemToAdd);
                 if (itemToAdd.itemTemplate.itemID == 2)
                 {
                     hasKey = true;
                 }
->>>>>>> Stashed changes
                 Destroy(itemToAdd.gameObject);
                 break;
             }

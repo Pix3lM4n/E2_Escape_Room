@@ -6,12 +6,8 @@ public class EnemyBehaviour : MonoBehaviour
     #region Variables
     NavMeshAgent enemyAgent;
     [SerializeField] Transform[] patrolPoints;
-<<<<<<< Updated upstream
-    [SerializeField] private ENEMY_STATE currentState;
-=======
     [SerializeField] ENEMY_STATE currentState;
 
->>>>>>> Stashed changes
     public enum ENEMY_STATE
     {
         Idle,
@@ -26,7 +22,6 @@ public class EnemyBehaviour : MonoBehaviour
     float elapsedIdleTime;
 
     [Header("Chasing State")]
-    //[SerializeField] bool isPlayerOnRange;
     public Transform player;
 
     [Header("Searhing State")]
@@ -53,7 +48,6 @@ public class EnemyBehaviour : MonoBehaviour
                 if (elapsedIdleTime >= idleTime)
                 {
                     elapsedIdleTime = 0;
-                    print("We is walking");
                     ChangeState(ENEMY_STATE.Walking);
                 }
                 break;
@@ -61,36 +55,25 @@ public class EnemyBehaviour : MonoBehaviour
             case ENEMY_STATE.Walking: //Estado de caminata
                 if (enemyAgent.remainingDistance <= enemyAgent.stoppingDistance)
                 {
-                    print("Arrived to point");
                     ChangeState(ENEMY_STATE.Idle);
                 }
                 break;
 
             case ENEMY_STATE.Chasing: //Estado de persecución
-<<<<<<< Updated upstream
-                print("We is chasing");
-                enemyAgent.SetDestination(player.position);
-                break;
-
-            case ENEMY_STATE.Searching: //Estado de búsqueda tras perder al jugador
-=======
                 if (GameMaster.Instance.isPlayerVisible == true)
                 {
                     enemyAgent.SetDestination(player.position);
-                    print("Player is found :)");
                 }
                 else
                 {
-                    ChangeState(ENEMY_STATE.Walking);
-                    print("Player not found :(");
+                    ChangeState(ENEMY_STATE.Searching);
                 }
                 break;
 
             case ENEMY_STATE.Searching: //Estado de busqueda tras perder al jugador
->>>>>>> Stashed changes
                 searchTime = Random.Range(minMaxSearchTime.x, minMaxSearchTime.y);
                 elapsedSearchTime += Time.deltaTime;
-                if (elapsedSearchTime >= idleTime)
+                if (elapsedSearchTime >= searchTime)
                 {
                     elapsedSearchTime = 0;
                     print("We is searching");
@@ -108,7 +91,6 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            print("Player is near");
             ChangeState(ENEMY_STATE.Chasing);
         }
     }
@@ -116,13 +98,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-<<<<<<< Updated upstream
-            print("Lost Player");
             ChangeState(ENEMY_STATE.Searching);
-=======
-            print("Player has left");
-            ChangeState(ENEMY_STATE.Walking);
->>>>>>> Stashed changes
         }
     }
     void ChangeState(ENEMY_STATE newState)
@@ -137,8 +113,6 @@ public class EnemyBehaviour : MonoBehaviour
             case ENEMY_STATE.Chasing:
                 enemyAgent.SetDestination(player.position);
                 break;
-<<<<<<< Updated upstream
-=======
 
             case ENEMY_STATE.Searching: //Estado de busqueda tras perder al jugador
                 searchTime = Random.Range(minMaxSearchTime.x, minMaxSearchTime.y);
@@ -155,7 +129,6 @@ public class EnemyBehaviour : MonoBehaviour
                     ChangeState(ENEMY_STATE.Idle);
                 }
                 break;
->>>>>>> Stashed changes
         }
     }
 }

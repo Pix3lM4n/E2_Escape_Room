@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     Image slotImage;
+    int slotID;
     TextMeshProUGUI slotText;
     PlayerInventory playerInventory;
 
@@ -18,11 +19,8 @@ public class InventoryUI : MonoBehaviour
     {
         slotText.text = null;
     }
-    void SetSlot(Item itemToSet)
+    public void SetSlot(Item itemToSet)
     {
-<<<<<<< Updated upstream
-
-=======
         slotText.text = itemToSet.itemTemplate.itemName;
         slotImage.color = itemToSet.itemTemplate.itemColor;
         slotID = itemToSet.itemTemplate.itemID;
@@ -44,6 +42,5 @@ public class InventoryUI : MonoBehaviour
             slotText.text = null;
             slotImage.color = Color.white;
         }
->>>>>>> Stashed changes
     }
 }
