@@ -5,7 +5,7 @@ public class SceneMaster : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("Test Scene");
+        SceneManager.LoadScene("Pablo");
     }
     public void QuitGame()
     {
