@@ -10,16 +10,8 @@ public class PlayerMovementFP : MonoBehaviour
     [Header("Player Speeds")]
     [Tooltip("Controls A D speed")]
     public float horizontalSpeed;
-    [Tooltip("COntrols W S speed")]
+    [Tooltip("Controls W S speed")]
     public float verticalSpeed;
-    [Tooltip("Controls mult of crouch speed. 0.5 is half")]
-    public float crouchSpeedMult;
-    [Tooltip("Crouch key")]
-    public KeyCode crouchKey;
-    [Tooltip("Controls mult of run speed")]
-    public float runSpeedMult;
-    [Tooltip("Run key")]
-    public KeyCode runKey;
 
     [Header("Misc Variables (Test Only)")]
     float horizontalRotation, verticalRotation;
@@ -47,21 +39,8 @@ public class PlayerMovementFP : MonoBehaviour
 
         //Player movement
         float horizontalMove, verticalMove;
-        if (Input.GetKey(crouchKey))
-        {
-            horizontalMove = Input.GetAxis("Horizontal") * horizontalSpeed * crouchSpeedMult * Time.deltaTime;
-            verticalMove = Input.GetAxis("Vertical") * verticalSpeed * crouchSpeedMult * Time.deltaTime;
-        }
-        else if (Input.GetKey(runKey))
-        {
-            horizontalMove = Input.GetAxis("Horizontal") * horizontalSpeed * runSpeedMult * Time.deltaTime;
-            verticalMove = Input.GetAxis("Vertical") * verticalSpeed * runSpeedMult * Time.deltaTime;
-        }
-        else
-        {
-            horizontalMove = Input.GetAxis("Horizontal") * horizontalSpeed * Time.deltaTime;
-            verticalMove = Input.GetAxis("Vertical") * verticalSpeed * Time.deltaTime;
-        }
-            transform.Translate(horizontalMove, 0, verticalMove);
+        horizontalMove = Input.GetAxis("Horizontal") * horizontalSpeed * Time.deltaTime;
+        verticalMove = Input.GetAxis("Vertical") * verticalSpeed * Time.deltaTime;
+        transform.Translate(horizontalMove, 0, verticalMove);
     }
 }
