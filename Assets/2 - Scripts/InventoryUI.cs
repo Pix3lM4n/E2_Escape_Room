@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     Image slotImage;
-    TextMeshProUGUI slotText;
     int slotID;
+    TextMeshProUGUI slotText;
     PlayerInventory playerInventory;
 
     private void Awake()
@@ -31,10 +31,14 @@ public class InventoryUI : MonoBehaviour
         {
             switch (slotID)
             {
-                case 1:
-                    playerInventory.PlayerAttack();
+                case 1: //Invisibilidad
+                    GameMaster.Instance.PlayerInvis();
+                    break;
+                case 2: //Llave
+                    playerInventory.playerIsAtGate = true;
                     break;
             }
+            playerInventory.inventory[buttonIndex] = null;
             slotText.text = null;
             slotImage.color = Color.white;
         }

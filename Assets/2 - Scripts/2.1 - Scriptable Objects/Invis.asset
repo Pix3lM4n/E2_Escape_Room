@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5699828113ee5224387257449fe20b82, type: 3}
-  m_Name: Bomba
+  m_Name: Invis
   m_EditorClassIdentifier: 
-  itemName: Bomba Aturdidora
-  itemColor: {r: 0, g: 0, b: 1, a: 1}
+  itemName: Invisibilidad
+  itemColor: {r: 0.026666641, g: 0, b: 1, a: 1}
   itemID: 1

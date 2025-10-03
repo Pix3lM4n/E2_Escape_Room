@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    EnemyBehaviour enemyBehaviour;
     [HideInInspector] public ItemTemplate[] inventory;
+    EnemyBehaviour enemyBehaviour;
     public InventoryUI[] inventoryUI;
-    bool isEnemyInRange;
+    [HideInInspector] public bool playerIsAtGate, hasKey;
+    public KeyCode interactionKey;
 
     void Start()
     {
         enemyBehaviour = FindFirstObjectByType<EnemyBehaviour>();
-        inventory = new ItemTemplate[4];
+        inventory = new ItemTemplate[3];
     }
     void OnTriggerEnter(Collider other)
     {
@@ -18,16 +19,16 @@ public class PlayerInventory : MonoBehaviour
         {
             AddItem(other.GetComponent<Item>());
         }
-        else if (other.GetComponent<EnemyBehaviour>())
-        {
-            isEnemyInRange = true;
-        }
     }
-    private void OnTriggerExit(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        if (other.GetComponent<EnemyBehaviour>())
+        if (other.CompareTag("Gate") && playerIsAtGate == true)
         {
-            isEnemyInRange = false;
+            GameMaster.Instance.OpenExitGate();
+        }
+        else if (other.CompareTag("Lever") && Input.GetKeyDown(interactionKey))
+        {
+            GameMaster.Instance.OpenKeyGate();
         }
     }
     private void AddItem(Item itemToAdd)
@@ -38,17 +39,13 @@ public class PlayerInventory : MonoBehaviour
             {
                 inventory[i] = itemToAdd.itemTemplate;
                 inventoryUI[i].SetSlot(itemToAdd);
+                if (itemToAdd.itemTemplate.itemID == 2)
+                {
+                    hasKey = true;
+                }
                 Destroy(itemToAdd.gameObject);
                 break;
             }
-        }
-    }
-    public void PlayerAttack()
-    {
-        if (isEnemyInRange)
-        {
-            print("Enemy is stunned");
-            enemyBehaviour.ChangeState(EnemyBehaviour.ENEMY_STATE.Stunned);
         }
     }
 }

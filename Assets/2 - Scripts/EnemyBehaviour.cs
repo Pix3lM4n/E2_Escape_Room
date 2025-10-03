@@ -7,12 +7,13 @@ public class EnemyBehaviour : MonoBehaviour
     NavMeshAgent enemyAgent;
     [SerializeField] Transform[] patrolPoints;
     [SerializeField] ENEMY_STATE currentState;
+
     public enum ENEMY_STATE
     {
         Idle,
         Walking,
         Chasing,
-        Stunned
+        Searching
     }
 
     [Header("Idle State")]
@@ -23,10 +24,10 @@ public class EnemyBehaviour : MonoBehaviour
     [Header("Chasing State")]
     public Transform player;
 
-    [Header("Stunned State")]
-    public float stunTime; //Time for stunned
-    public Vector2 minMaxStunTime; //Range for stunTime
-    float elapsedStunTime;
+    [Header("Searhing State")]
+    public float searchTime; //Time for searching
+    public Vector2 minMaxSearchTime; //Range for searchingTime
+    float elapsedSearchTime;
     #endregion
 
     private void Awake()
@@ -59,19 +60,28 @@ public class EnemyBehaviour : MonoBehaviour
                 break;
 
             case ENEMY_STATE.Chasing: //Estado de persecución
-                enemyAgent.SetDestination(player.position);
+                if (GameMaster.Instance.isPlayerVisible == true)
+                {
+                    enemyAgent.SetDestination(player.position);
+                }
+                else
+                {
+                    ChangeState(ENEMY_STATE.Searching);
+                }
                 break;
 
-            case ENEMY_STATE.Stunned: //Estado de aturdido tras ser atacado
-                stunTime = Random.Range(minMaxStunTime.x, minMaxStunTime.y);
-                elapsedStunTime += Time.deltaTime;
-                if (elapsedStunTime >= idleTime)
+            case ENEMY_STATE.Searching: //Estado de busqueda tras perder al jugador
+                searchTime = Random.Range(minMaxSearchTime.x, minMaxSearchTime.y);
+                elapsedSearchTime += Time.deltaTime;
+                if (elapsedSearchTime >= searchTime)
                 {
-                    elapsedStunTime = 0;
+                    elapsedSearchTime = 0;
+                    print("We is searching");
                     ChangeState(ENEMY_STATE.Walking);
                 }
                 else if (enemyAgent.remainingDistance <= enemyAgent.stoppingDistance)
                 {
+                    print("Arrived to point");
                     ChangeState(ENEMY_STATE.Idle);
                 }
                 break;
@@ -81,7 +91,6 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            print("Found player");
             ChangeState(ENEMY_STATE.Chasing);
         }
     }
@@ -89,11 +98,10 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            print("Lost Player");
-            ChangeState(ENEMY_STATE.Walking);
+            ChangeState(ENEMY_STATE.Searching);
         }
     }
-    public void ChangeState(ENEMY_STATE newState)
+    void ChangeState(ENEMY_STATE newState)
     {
         currentState = newState;
         switch (newState)
@@ -106,13 +114,13 @@ public class EnemyBehaviour : MonoBehaviour
                 enemyAgent.SetDestination(player.position);
                 break;
 
-            case ENEMY_STATE.Stunned: //Estado de búsqueda tras perder al jugador
-                stunTime = Random.Range(minMaxStunTime.x, minMaxStunTime.y);
-                elapsedStunTime += Time.deltaTime;
-                if (elapsedStunTime >= idleTime)
+            case ENEMY_STATE.Searching: //Estado de busqueda tras perder al jugador
+                searchTime = Random.Range(minMaxSearchTime.x, minMaxSearchTime.y);
+                elapsedSearchTime += Time.deltaTime;
+                if (elapsedSearchTime >= idleTime)
                 {
-                    elapsedStunTime = 0;
-                    print("We is stunned");
+                    elapsedSearchTime = 0;
+                    print("We is searching");
                     ChangeState(ENEMY_STATE.Walking);
                 }
                 else if (enemyAgent.remainingDistance <= enemyAgent.stoppingDistance)
