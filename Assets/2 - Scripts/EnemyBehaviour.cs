@@ -7,6 +7,7 @@ public class EnemyBehaviour : MonoBehaviour
     NavMeshAgent enemyAgent;
     [SerializeField] Transform[] patrolPoints;
     [SerializeField] ENEMY_STATE currentState;
+    public Animator anim;
 
     public enum ENEMY_STATE
     {
@@ -115,10 +116,16 @@ public class EnemyBehaviour : MonoBehaviour
         {
             case ENEMY_STATE.Walking:
                 enemyAgent.SetDestination(patrolPoints[Random.Range(0, patrolPoints.Length)].position);
+                anim.SetBool("IdleEnemy", false);
+                anim.SetBool("WalkEnemy", true);
+                anim.SetBool("RunEnemy", false);
                 break;
 
             case ENEMY_STATE.Chasing:
                 enemyAgent.SetDestination(player.position);
+                anim.SetBool("IdleEnemy", false);
+                anim.SetBool("WalkEnemy", false);
+                anim.SetBool("RunEnemy", true);
                 break;
 
             case ENEMY_STATE.Searching: //Estado de busqueda tras perder al jugador
@@ -129,11 +136,17 @@ public class EnemyBehaviour : MonoBehaviour
                     elapsedSearchTime = 0;
                     print("We is searching");
                     ChangeState(ENEMY_STATE.Walking);
+                    anim.SetBool("IdleEnemy", false);
+                    anim.SetBool("WalkEnemy", true);
+                    anim.SetBool("RunEnemy", false);
                 }
                 else if (enemyAgent.remainingDistance <= enemyAgent.stoppingDistance)
                 {
                     print("Arrived to point");
                     ChangeState(ENEMY_STATE.Idle);
+                    anim.SetBool("IdleEnemy", true);
+                    anim.SetBool("WalkEnemy", false);
+                    anim.SetBool("RunEnemy", false);
                 }
                 break;
         }
