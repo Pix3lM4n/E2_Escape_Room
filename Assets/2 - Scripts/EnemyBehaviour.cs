@@ -101,6 +101,13 @@ public class EnemyBehaviour : MonoBehaviour
             ChangeState(ENEMY_STATE.Searching);
         }
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            GameMaster.Instance.KilledPlayer();
+        }
+    }
     void ChangeState(ENEMY_STATE newState)
     {
         currentState = newState;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour
 {
@@ -6,16 +7,18 @@ public class GameMaster : MonoBehaviour
 
     public bool isPlayerVisible, isKeyGateOpen;
     public float playerInvisDuration, keyGateDuration;
-    [SerializeField] float elapsedInvisTime, elapsedKeyGateTime;
     public GameObject exitGate, keyGate;
-    GameObject keyGateClone;
     public Transform keyGateSpawn;
+    [SerializeField] float elapsedInvisTime, elapsedKeyGateTime;
+    GameObject keyGateClone;
     PlayerInventory playerInventory;
+    SceneMaster sceneMaster;
 
     private void Awake()
     {
         Instance = this;
         playerInventory = FindFirstObjectByType<PlayerInventory>();
+        sceneMaster = FindFirstObjectByType<SceneMaster>();
     }
     void Start()
     {
@@ -43,7 +46,6 @@ public class GameMaster : MonoBehaviour
                 isKeyGateOpen = false;
                 if (isKeyGateOpen == false)
                 {
-                    print("Gate is closed");
                     keyGateClone = Instantiate(keyGate, keyGateSpawn);
                 }
             }
@@ -61,10 +63,15 @@ public class GameMaster : MonoBehaviour
     public void OpenExitGate()
     {
         Destroy(exitGate.gameObject);
+        sceneMaster.WinScene();
     }
     public void OpenKeyGate()
     {
         Destroy(keyGateClone.gameObject);
         isKeyGateOpen = true;
+    }
+    public void KilledPlayer()
+    {
+        sceneMaster.LoseScene();
     }
 }
