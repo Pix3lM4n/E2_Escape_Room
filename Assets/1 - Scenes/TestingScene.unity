@@ -86010,6 +86010,8 @@ MonoBehaviour:
   keyGateSpawn: {fileID: 142043969}
   elapsedInvisTime: 0
   elapsedKeyGateTime: 0
+  SFXSource: {fileID: 1887436176}
+  ClickSound: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
 --- !u!4 &2038818380
 Transform:
   m_ObjectHideFlags: 0

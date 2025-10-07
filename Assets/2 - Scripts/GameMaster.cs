@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class GameMaster : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class GameMaster : MonoBehaviour
     public GameObject exitGate, keyGate;
     public Transform keyGateSpawn;
     [SerializeField] float elapsedInvisTime, elapsedKeyGateTime;
+    private float elapsedSoundTime;
     GameObject keyGateClone;
     PlayerInventory playerInventory;
     SceneMaster sceneMaster;
+    public AudioSource SFXSource;
+    public AudioResource ClickSound;
 
     private void Awake()
     {
@@ -40,6 +44,8 @@ public class GameMaster : MonoBehaviour
         if (isKeyGateOpen == true)
         {
             elapsedKeyGateTime += Time.deltaTime;
+            elapsedSoundTime += Time.deltaTime;
+            GateOpen();
             if (elapsedKeyGateTime >= keyGateDuration) 
             {
                 elapsedKeyGateTime = 0;
@@ -73,5 +79,16 @@ public class GameMaster : MonoBehaviour
     public void KilledPlayer()
     {
         sceneMaster.LoseScene();
+    }
+
+    public void GateOpen()
+    {
+        if (elapsedSoundTime > 0.5f)
+        {
+            SFXSource.resource = ClickSound;
+            SFXSource.Play();
+            elapsedSoundTime = 0 ;
+        }
+        
     }
 }
