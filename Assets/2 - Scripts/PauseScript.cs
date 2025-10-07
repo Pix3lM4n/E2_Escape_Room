@@ -37,6 +37,8 @@ public class PauseScript : MonoBehaviour
         Time.timeScale = 0;
         pauseScreen.SetActive(true);
         menuUI.SetActive(true);
+        SFXSource.resource = clickClip;
+        SFXSource.Play();
     }
 
     public void HideMenu()
@@ -44,15 +46,21 @@ public class PauseScript : MonoBehaviour
         Time.timeScale = 1;
         pauseScreen.SetActive(false);
         menuUI.SetActive(false);
+        SFXSource.resource = clickClip;
+        SFXSource.Play();
     }
     public void OpenSettings()
     {
         menuUI.SetActive(false);
         settingsUI.SetActive(true);
+        SFXSource.resource = clickClip;
+        SFXSource.Play();
     }
     public void HideSettings()
     {
         menuUI.SetActive(true);
         settingsUI.SetActive(false);
+        SFXSource.resource = clickClip;
+        SFXSource.Play();
     }
 }
