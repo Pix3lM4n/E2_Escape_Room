@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class PauseScript : MonoBehaviour
@@ -6,6 +7,8 @@ public class PauseScript : MonoBehaviour
     private GameObject pauseScreen;
     private GameObject menuUI;
     private GameObject settingsUI;
+    public AudioSource SFXSource;
+    public AudioResource clickClip;
     
     private void Awake()
     {
