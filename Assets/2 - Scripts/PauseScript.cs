@@ -7,7 +7,6 @@ public class PauseScript : MonoBehaviour
     private GameObject menuUI;
     private GameObject settingsUI;
     
-
     private void Awake()
     {
         pauseScreen = GameObject.Find("Pause Screen");
